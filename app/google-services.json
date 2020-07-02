@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "924944740178",
+    "firebase_url": "https://gestiongastos-8d84f.firebaseio.com",
+    "project_id": "gestorgastos-8d84f",
+    "storage_bucket": "gestiongastos-8d84f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924944740178:android:b0dbaf716ed0e20f8c548b",
+        "android_client_info": {
+          "package_name": "com.example.gestorgastos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924944740178-qe9663ve2u76sh1cr57prq7t5ffqkkif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHR_5bsetMXARpxxy_guL5IJH2LbJzbZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924944740178-qe9663ve2u76sh1cr57prq7t5ffqkkif.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

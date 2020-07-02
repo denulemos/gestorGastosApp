@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@id/disponibles"
+        android:title="Viajes Disponibles" />
+    <item android:id="@id/viajesPlaneados"
+        android:title="Viajes Planeados" />
+    <item android:id="@id/viajesEnCamino"
+        android:title="Viajes en Camino" />
+
+</menu>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="deshabilitados" type="id" />
+    <item name="administradores" type="id" />
+    <item name="sinCamion" type="id" />
+    <item name="habilitados" type="id" />
+    <item name="disponibles" type="id" />
+    <item name="viajesPlaneados" type="id" />
+    <item name="viajesEnCamino" type="id" />
+    <item name="viajesTerminados" type="id" />
+    <item name="gastosHabiles" type="id" />
+    <item name="gastosPendientes" type="id" />
+    <item name="gastosDesestimados" type="id" />
+    <item name="solicitudContraseña" type="id" />
+    <item name="camionesDisponibles" type="id" />
+    <item name="camionesOcupados" type="id" />
+</resources>

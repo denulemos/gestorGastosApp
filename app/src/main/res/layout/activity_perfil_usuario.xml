@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".perfil_usuario"
+    android:onClick="hideKeyboard">
+
+
+    <TextView
+        android:id="@+id/tituloPerfil"
+        android:layout_width="236dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="Perfil"
+        android:textAlignment="gravity"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="136dp"
+        android:layout_height="129dp"
+        android:layout_marginEnd="4dp"
+        android:padding="5dp"
+        android:tint="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/perfil" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="358dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="132dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tituloPerfil">
+
+        <TextView
+            android:id="@+id/informacionPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:fontFamily="@font/roboto"
+            android:text="Informacion en Sistema"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/nombrePerfil"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="Nombre, apellido completo"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/dniPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="Dni: 12354678"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/emailPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="Email: placeholder"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/camionPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="Camion"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/CartelContraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="Cambio de contraseña "
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/contraseñaPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="71dp"
+            android:backgroundTint="@color/md_white_1000"
+            android:ems="10"
+            android:hint="@string/chof_contraseña"
+            android:inputType="textPersonName"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/md_white_1000"
+                android:fontFamily="@font/roboto_light"
+                android:inputType="textPassword" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="424dp"
+        android:layout_height="62dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageButton
+            android:id="@+id/imageButton6"
+            android:layout_width="66dp"
+            android:layout_height="53dp"
+            android:background="@color/colorBackground"
+            android:onClick="volverMenuBoton"
+            app:srcCompat="@drawable/ic_back" />
+
+        <Button
+            android:id="@+id/button6"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_light"
+            android:onClick="logOut"
+            android:text="Cerrar sesion"
+            android:textColorLink="@color/md_amber_500" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

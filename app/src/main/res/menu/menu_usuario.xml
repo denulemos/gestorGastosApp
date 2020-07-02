@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@id/habilitados"
+        android:title="Usuarios Habilitados" />
+<item android:id="@id/deshabilitados"
+    android:title="Usuarios Deshabilitados" />
+    <item android:id="@id/administradores"
+        android:title="Usuarios Administradores" />
+
+
+</menu>
