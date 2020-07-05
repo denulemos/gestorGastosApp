@@ -1,111 +1,227 @@
 # Gestor Gastos
 
-_Esta aplicacion es un gestor de Gastos hecho con Java y para Android Nativo. Funciona con SQLite (Esto quiere decir que para que la misma funcione en un entorno de produccion, debe ser 
+Esta aplicacion es un gestor de Gastos hecho con Java y para Android Nativo. Funciona con SQLite (Esto quiere decir que para que la misma funcione en un entorno de produccion, debe ser 
 integrada con Firebase) y posee integracion con Google Sheets mediante Google Script, funciona como un ABM de camiones, gastos, usuarios, etc.., es por eso que, para que la misma pueda funcionar
 localmente en Android Studio, se deben hacer algunas configuraciones previas.
 
-Sientanse libres de tomar, y mejorar el codigo a su gusto :) Puede que la calidad del mismo no sea la mejor debido a los tiempos en los cuales esta aplicacion fue desarollada._
+Sientanse libres de tomar, y mejorar el codigo a su gusto :) Puede que la calidad del mismo no sea la mejor debido a los tiempos en los cuales esta aplicacion fue desarollada.
 
+### Inicializaciones y Detalles 🔧
 
+*La aplicacion posee datos inicializados en la base de datos (Que recordemos, es SQLite, funciona solo en un ambiente local y no productivo) (DatabaseContract).
 
-## Comenzando 🚀
+Usuarios: Un usuario comun y un usuario administrador. El usuario cuyo DNI es 00000000 no puede ser eliminado. 
 
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
+Camiones: Solo algunos modelos de prueba
 
-Mira **Deployment** para conocer como desplegar el proyecto.
+Categorias: 4 categorias
 
+Viajes y Gastos no son inicializados. 
 
-### Pre-requisitos 📋
+*La aplicacion no posee Unit Testing (Perdon!).
 
-_Que cosas necesitas para instalar el software y como instalarlas_
+*La aplicacion fue desarollada con Android Studio Canary (Tengo AMD, en el momento en que comence el desarollo, la version productiva de Android Studio no soportaba la virtualizacion en AMD).
+
+## Seteando Google Sheets y Google Scripts 🚀
+
+**TENER EN CUENTA COMPLETAR LOS ARCHIVOS DE CONFIGURACION DE GOOGLE MAPS CON UNA KEY PERSONAL PARA QUE LOS MAPAS FUNCIONEN CORRECTAMENTE EN LOCAL!!!** 
+
+Para que la aplicacion tenga una correcta implementacion con Google Sheets, necesitaremos:
+
+1- Crear un Google Sheet, puede ser en nuestro drive personal
+2-Crear un nuevo Google Script
+
+Un video/tutorial que me sirvio mucho para el Set up del ambiente fue el siguiente: https://www.youtube.com/watch?v=xz-BX-eLBN0&t=1s_
+
+Hay que tener en cuenta que, no pretendemos usar Google Sheets como base de datos, solo como un "historico" de la aplicacion. Una preview de como se encuentra actualmente la base de datos real de la aplicacion (Que en este caso es SQLite), por lo tanto solo haremos uso del INSERT y de los UPDATE. 
+
+En mi caso tenia un Sheet que poseia la seccion Camiones, Viajes, Usuarios y Gastos, TENERLO EN CUENTA AL VER EL SIGUIENTE SCRIPT!.
+
+El Script utilizado fue el siguiente => 
+
 
 ```
-Da un ejemplo
+var ss = SpreadsheetApp.openByUrl("LINK DE TU SHEET PERSONAL"); 
+
+function doPost(e){
+  
+  var jsonPost = JSON.parse(e.postData.contents);
+  
+  switch(jsonPost.action){
+    case "add":
+       var sheetName = jsonPost.sheet;
+  var rows = jsonPost.rows;
+
+  for(var i = 0; i < jsonPost.rows.length; i++){
+ 
+    ss.getSheetByName(sheetName).appendRow(jsonPost.rows[i]);
+  }
+   
+      break;
+      
+    case "addCamion":
+      var sheetName = "Camiones";
+      var id = jsonPost.id;
+      var patente = jsonPost.patente;
+      var activo = jsonPost.activo;
+      var chofer = jsonPost.chofer;
+      
+      ss.getSheetByName(sheetName).getRange(id + 1, 1).setValue(id);
+     ss.getSheetByName(sheetName).getRange(id + 1, 2).setValue(patente);
+     ss.getSheetByName(sheetName).getRange(id + 1, 3).setValue(activo);
+     ss.getSheetByName(sheetName).getRange(id + 1, 4).setValue(chofer);
+      
+      break;
+    case "addDesestimado":
+        var rows = jsonPost.rows;
+    var viaje = jsonPost.viaje + 1;
+ss.getSheetByName("Viajes").getRange(viaje, 6).setValue(jsonPost.monto);
+    
+  for(var i = 0; i < jsonPost.rows.length; i++){
+ 
+    ss.getSheetByName("Gastos").appendRow(jsonPost.rows[i]);
+    
+  }
+      break;
+      
+    case "viajeAEnCamino":
+       var sheetName = "Viajes";
+  var id = jsonPost.id;
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 5).setValue("En Camino");
+      break;
+      
+    case "viajeFinalizado":
+       var sheetName = "Viajes";
+  var id = jsonPost.id;
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 5).setValue("Completo");
+      break;
+      
+    case "deshabilitarUsuario":
+        var sheetName = "Usuarios";
+  var id = jsonPost.id;
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 6).setValue("Inactivo");
+      break;
+      
+    case "editarUsuario":
+         var sheetName = "Usuarios";
+  var id = jsonPost.id;
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 2).setValue(jsonPost.nombre);
+     ss.getSheetByName(sheetName).getRange(id + 1, 3).setValue(jsonPost.apellido);
+     ss.getSheetByName(sheetName).getRange(id + 1, 5).setValue(jsonPost.email);
+     ss.getSheetByName(sheetName).getRange(id + 1, 7).setValue(jsonPost.rol);
+      break;
+      
+    case "habilitarUsuario":
+       var sheetName = "Usuarios";
+  var id = jsonPost.id;
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 6).setValue("Activo");
+      break;
+      
+    case "editarViajeCamino":
+       var sheetName = "Viajes";
+  var id = jsonPost.id;
+      var destino = jsonPost.destino;
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 4).setValue(destino);
+      break;
+      
+    case "editarViajePlan":
+        var sheetName = "Viajes";
+  var id = jsonPost.id;
+      var destino = jsonPost.destino;
+         var origen = jsonPost.origen;
+         
+        if (jsonPost.chofer == null){
+         var chofer = "Disponible";
+        }
+        else{
+       var chofer = jsonPost.chofer;
+        }
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 4).setValue(destino);
+         ss.getSheetByName(sheetName).getRange(id + 1, 3).setValue(origen);
+         ss.getSheetByName(sheetName).getRange(id + 1, 2).setValue(chofer);
+      break;
+      
+    case "editarCamion":
+          var sheetName = "Camiones";
+  var id = jsonPost.id;
+         var activo = jsonPost.activo;
+       var chofer = jsonPost.chofer;
+          /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 3).setValue(activo);
+         ss.getSheetByName(sheetName).getRange(id + 1, 4).setValue(chofer);
+      break;
+      
+    case "cancelarViaje":
+        var sheetName = "Viajes";
+  var id = jsonPost.id;
+  
+  /* Fila / Columna */
+   ss.getSheetByName(sheetName).getRange(id + 1, 5).setValue("Cancelado");
+      break;
+      
+    case "editarCamionChofer":
+        var sheetName = "Camiones";
+  var id = jsonPost.id;
+       var chofer = jsonPost.chofer;
+          /* Fila / Columna */
+         ss.getSheetByName(sheetName).getRange(id + 1, 4).setValue(chofer);
+      break;
+      
+    case "actualizarMontoViaje":
+          var sheetName = "Viajes";
+  var id = jsonPost.id;
+       var chofer = jsonPost.chofer;
+      var monto = jsonPost.monto;
+          /* Fila / Columna */
+         ss.getSheetByName(sheetName).getRange(id + 1, 6).setValue(monto);
+      break;
+      
+    case "desasignarViajes":
+          var sheetName = "Viajes";
+     var rows = jsonPost.rows;
+
+  for(var i = 0; i < jsonPost.rows.length; i++){
+ 
+     ss.getSheetByName(sheetName).getRange(jsonPost.rows[i], 2).setValue("Disponible");
+  }
+      break;
+      default:
+       return ContentService.createTextOutput("No se llamo a ninguna funcion valida del Script");
+      break;
+  }
+  
+}
+
+
 ```
 
-### Instalación 🔧
+En el caso de uso de esta aplicacion, solo haremos POST sobre el Script de google pero las posibilidades son infinitas. Recomiendo Insomnia o Postman para probar el Script final. 
 
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
+### Envio de Contraseña 📋
 
-_Dí cómo será ese paso_
+Esta aplicacion posee la funcion de "Olvide mi Contraseña" que aparece en la pantalla principal. La funcionalidad de la misma es, pedir el DNI y el Email del usuario que olvido su contraseña, si ambas coinciden con los registros de la base de datos actual, se envia un numero random al email del usuario, este numero seria la nueva contraseña del usuario. El mismo tiene que usar ese numero como contraseña, para luego cambiarla si asi lo desea.
 
-```
-Da un ejemplo
-```
+Para que esta funcionalidad este vigente, en este caso, se debe instalar la libreria JAVAMAIL que se puede encontrar en este link => https://code.google.com/archive/p/javamail-android/
 
-_Y repite_
+Tener en cuenta que al enviar demasiados Emails de prueba desde la misma IP puede causar un bloqueo por parte del servicio de correos!. 
 
-```
-hasta finalizar
-```
-
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
-
-## Ejecutando las pruebas ⚙️
-
-_Explica como ejecutar las pruebas automatizadas para este sistema_
-
-### Analice las pruebas end-to-end 🔩
-
-_Explica que verifican estas pruebas y por qué_
-
-```
-Da un ejemplo
-```
-
-### Y las pruebas de estilo de codificación ⌨️
-
-_Explica que verifican estas pruebas y por qué_
-
-```
-Da un ejemplo
-```
-
-## Despliegue 📦
-
-_Agrega notas adicionales sobre como hacer deploy_
-
-## Construido con 🛠️
-
-_Menciona las herramientas que utilizaste para crear tu proyecto_
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
-* [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
-
-## Contribuyendo 🖇️
-
-Por favor lee el [CONTRIBUTING.md](https://gist.github.com/villanuevand/xxxxxx) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
-
-## Wiki 📖
-
-Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/tu/proyecto/wiki)
-
-## Versionado 📌
-
-Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/tu/proyecto/tags).
-
-## Autores ✒️
-
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
-
-* **Andrés Villanueva** - *Trabajo Inicial* - [villanuevand](https://github.com/villanuevand)
-* **Fulanito Detal** - *Documentación* - [fulanitodetal](#fulanito-de-tal)
-
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto. 
-
-## Licencia 📄
-
-Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
-
-## Expresiones de Gratitud 🎁
-
-* Comenta a otros sobre este proyecto 📢
-* Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
-* Da las gracias públicamente 🤓.
-* etc.
+## ¿Dudas? ✒️
 
 
+No duden en contactarme a mi Linkedin (https://www.linkedin.com/in/denisse-alejandra-lemos-999370124/) ante cualquier duda o sugerencia! Estoy abierta a aprender cosas nuevas y a reveer todo lo necesario :) .
 
----
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊
+
